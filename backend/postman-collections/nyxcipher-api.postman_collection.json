@@ -1,0 +1,356 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-g7h8-i9j0-k1l2m3n4o5p6",
+    "name": "Nyxcipher API",
+    "description": "API collection for Nyxcipher Express backend",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "description": "Authentication related endpoints",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"testuser\",\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "register"]
+            },
+            "description": "Register a new user account"
+          }
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"test@example.com\",\n    \"password\": \"password123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "login"]
+            },
+            "description": "Login with email and password to get JWT token"
+          },
+          "response": []
+        },
+        {
+          "name": "Verify Email",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/verify/:token",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "verify", ":token"],
+              "variable": [
+                {
+                  "key": "token",
+                  "value": "your-verification-token",
+                  "description": "Email verification token received in email"
+                }
+              ]
+            },
+            "description": "Verify user email with token received in email"
+          }
+        },
+        {
+          "name": "Resend Verification Email",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/resend",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "resend"]
+            },
+            "description": "Resend verification email to user"
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"test@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/forgot",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "forgot"]
+            },
+            "description": "Request password reset email"
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "description": "User profile and related endpoints",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me"]
+            },
+            "description": "Get current user profile information"
+          }
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"username\": \"updatedUsername\",\n    \"phone_number\": \"1234567890\",\n    \"address\": {\n        \"street\": \"123 Main St\",\n        \"city\": \"Anytown\",\n        \"state\": \"CA\",\n        \"zip\": \"12345\",\n        \"country\": \"USA\"\n    }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me"]
+            },
+            "description": "Update current user profile information"
+          }
+        },
+        {
+          "name": "Delete User Profile",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me"]
+            },
+            "description": "Delete current user profile"
+          }
+        },
+        {
+          "name": "Get User Nyxciphers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me/nyxcipher/list",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me", "nyxcipher", "list"]
+            },
+            "description": "Get all nyxciphers for current user"
+          }
+        },
+        {
+          "name": "Get Specific Nyxcipher",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me/nyxcipher/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me", "nyxcipher", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "nyxcipher-id",
+                  "description": "ID of the nyxcipher to retrieve"
+                }
+              ]
+            },
+            "description": "Get specific nyxcipher by ID"
+          }
+        },
+        {
+          "name": "Get Active Nyxciphers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me/active/nyxcipher/list",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me", "active", "nyxcipher", "list"]
+            },
+            "description": "Get all active nyxciphers for current user"
+          }
+        },
+        {
+          "name": "Get Closed Nyxciphers",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me/closed/nyxcipher/list",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me", "closed", "nyxcipher", "list"]
+            },
+            "description": "Get all closed nyxciphers for current user"
+          }
+        },
+        {
+          "name": "Add to Cart",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"nyxcipher_id\": \"nyxcipher-id\",\n    \"ticket_count\": 1,\n    \"price\": 100\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me/cart",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me", "cart"]
+            },
+            "description": "Add item to user's cart"
+          }
+        },
+        {
+          "name": "Delete from Cart",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/user/me/cart/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "user", "me", "cart", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "cart-item-id",
+                  "description": "ID of the cart item to delete"
+                }
+              ]
+            },
+            "description": "Remove item from user's cart"
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [""]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Auto-extract auth token from login response",
+          "if (pm.response.code === 200 && pm.info.requestName === \"Login\") {",
+          "    const responseJson = pm.response.json();",
+          "    if (responseJson && responseJson.password) {",
+          "        pm.environment.set(\"authToken\", responseJson.password);",
+          "        console.log(\"Auth token saved to environment\");",
+          "    }",
+          "}"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string",
+      "description": "Base URL for the API"
+    }
+  ]
+}
