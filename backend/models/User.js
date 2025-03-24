@@ -4,6 +4,7 @@ const bcryptjs = require("bcryptjs");
 const crypto = require("crypto");
 const { ROLE } = require("../config/constant");
 const { validate_Password } = require("../utils/validations");
+const { hashPassword } = require("../utils/utils");
 
 //------------ User Schema ------------//
 const UserSchema = new mongoose.Schema(
@@ -79,6 +80,7 @@ const UserSchema = new mongoose.Schema(
         // Set token expire time (30 minutes)
         this.resetTokenExpires = Date.now() + 30 * 60 * 1000;
         await this.save();
+        // await this.updateOne({ $set: { $where: { _id: this._id }, resetToken: this.resetToken, resetTokenExpires: this.resetTokenExpires, }, });
 
         return resetToken;
       },
@@ -88,6 +90,7 @@ const UserSchema = new mongoose.Schema(
        */
       async toProfileJSONFor() {
         return {
+          isModified: this.isModified("password"),
           username: this.username,
           email: this.email,
           role: this.role,
@@ -107,6 +110,15 @@ const UserSchema = new mongoose.Schema(
 // Custom error messages for duplicate fields
 UserSchema.plugin(uniqueValidator, {
   message: "Error '{PATH}': {VALUE} is already taken.",
+});
+
+// Hash password before saving
+// @ts-expect-error
+UserSchema.pre("save", async function (next, options) {
+  if (this.isModified("password"))
+    this.password = await hashPassword(this.password);
+
+  next();
 });
 
 module.exports = mongoose.model("User", UserSchema);
